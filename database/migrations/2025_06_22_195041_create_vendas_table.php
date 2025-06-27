@@ -19,8 +19,8 @@ return new class extends Migration
             $table->date('data_venda');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('cliente_id')->references('id')->on('clientes');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
+            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');;
         });
     }
 
