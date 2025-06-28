@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\VerifyEmailNotification;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
 
     protected $table = 'users';
@@ -28,6 +29,11 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -43,6 +49,8 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+    /*
     protected function casts(): array
     {
         return [
@@ -50,6 +58,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    */
 
     public function clientes() {
         return $this->hasMany(Cliente::class);
