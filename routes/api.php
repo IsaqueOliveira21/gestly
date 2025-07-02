@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,5 +16,8 @@ Route::prefix('v1')->group(function() {
         Route::get('/test', function() {
             return response()->json("All is working fine!");
         });
+
+        // Clientes
+        Route::apiResource('clientes', ClienteController::class);
     });
 });
