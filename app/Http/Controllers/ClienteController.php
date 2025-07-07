@@ -58,15 +58,12 @@ class ClienteController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        try {
+            $cliente = $this->service->show($id);
+            return new ClienteResource($cliente);
+        } catch(Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -74,7 +71,18 @@ class ClienteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $data = $request->validate([
+                'nome' => 'string|nullable',
+                'sobrenome' => 'string|nullable',
+                'telefone' => 'string|nullable',
+                'email' => 'string|nullable',
+            ]);
+            $clienteUpdated = $this->service->update($data, $id);
+            return new ClienteResource($clienteUpdated);
+        } catch(Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**

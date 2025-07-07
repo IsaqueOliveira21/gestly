@@ -39,6 +39,33 @@ class ClienteService {
             throw new RuntimeException("Error ao cadastrar cliente.");
         }
     }
+
+    public function show(Int $id) {
+        try {
+            $cliente = auth()->user()->clientes()->find($id);
+            if(!$cliente) {
+                throw new RuntimeException("Cliente não encontrado.");
+            }
+            return $cliente;
+        } catch(Exception $e) {
+            Log::error("Cliente show error: Line: ".$e->getMessage()." | Message: ".$e->getMessage());
+            throw new RuntimeException($e->getMessage());
+        }
+    }
+
+    public function update(Array $data, Int $id) {
+        try {
+            $cliente = auth()->user()->clientes()->find($id);
+            if(!$cliente) {
+                throw new RuntimeException("Cliente não encontrado.");
+            }
+            $cliente->update($data);
+            return $cliente;
+        } catch(Exception $e) {
+            Log::error("Cliente show error: Line: ".$e->getMessage()." | Message: ".$e->getMessage());
+            throw new RuntimeException($e->getMessage());
+        }
+    }
 }
 
 ?>
