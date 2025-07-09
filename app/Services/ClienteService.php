@@ -62,7 +62,21 @@ class ClienteService {
             $cliente->update($data);
             return $cliente;
         } catch(Exception $e) {
-            Log::error("Cliente show error: Line: ".$e->getMessage()." | Message: ".$e->getMessage());
+            Log::error("Cliente update error: Line: ".$e->getMessage()." | Message: ".$e->getMessage());
+            throw new RuntimeException($e->getMessage());
+        }
+    }
+
+    public function destroy(Int $id) {
+        try {
+            $cliente = Cliente::find($id);
+            if(!$cliente || $cliente->user->id != auth()->user()->id) {
+                throw new RuntimeException("Cliente não encontrado.");
+            }
+            $cliente->delete();
+            return response()->json(['message' => 'Cliente excluido com sucesso.'], 200);
+        } catch(Exception $e) {
+            Log::error("Cliente delete error: Line: ".$e->getMessage()." | Message: ".$e->getMessage());
             throw new RuntimeException($e->getMessage());
         }
     }

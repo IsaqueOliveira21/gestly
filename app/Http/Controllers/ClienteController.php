@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ClienteResource;
 use App\Services\ClienteService;
-use Exception;
 use Illuminate\Http\Request;
 use Throwable;
 
@@ -90,6 +89,10 @@ class ClienteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            return $this->service->destroy($id);           
+        } catch(Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
