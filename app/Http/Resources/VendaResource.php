@@ -15,10 +15,11 @@ class VendaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'user' => (integer) $this->user_id,
-            'cliente' => (integer) $this->cliente_id,
-            'total' => (float) $this->total,
-            'data_venda' => (string) $this->data_venda,
+            'id' => (Integer) $this->id,
+            'user_id' => (Integer) $this->user_id,
+            'cliente_id' => (Integer) $this->cliente_id,
+            'total' => (Float) $this->total,
+            'data_venda' => (String) $this->data_venda,
         ];
     }
 }

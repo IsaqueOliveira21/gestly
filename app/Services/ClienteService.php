@@ -43,7 +43,7 @@ class ClienteService {
     public function show(Int $id) {
         try {
             $cliente = auth()->user()->clientes()->find($id);
-            if(!$cliente) {
+            if(!$cliente || $cliente->user_id != auth()->user()->id) {
                 throw new RuntimeException("Cliente não encontrado.");
             }
             return $cliente;
@@ -56,7 +56,7 @@ class ClienteService {
     public function update(Array $data, Int $id) {
         try {
             $cliente = auth()->user()->clientes()->find($id);
-            if(!$cliente) {
+            if(!$cliente || $cliente->user_id != auth()->user()->id) {
                 throw new RuntimeException("Cliente não encontrado.");
             }
             $cliente->update($data);
@@ -70,7 +70,7 @@ class ClienteService {
     public function destroy(Int $id) {
         try {
             $cliente = Cliente::find($id);
-            if(!$cliente || $cliente->user->id != auth()->user()->id) {
+            if(!$cliente || $cliente->user_id != auth()->user()->id) {
                 throw new RuntimeException("Cliente não encontrado.");
             }
             $cliente->delete();
