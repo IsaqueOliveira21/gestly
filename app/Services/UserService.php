@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Notifications\VerifyEmailNotification;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\Log;
 use RuntimeException;
 
 class UserService {
@@ -38,10 +39,22 @@ class UserService {
             $token = explode("|", auth()->user()->createToken('accessToken')->plainTextToken)[1];
 
             return [
-                'user' => auth()->user(), 
+                'user' => auth()->user(),
                 'token' => $token
             ];
         } catch(Exception $e) {
+            throw new RuntimeException("Ocorreu um erro, tente novamente mais tarde.");
+        }
+    }
+
+    public function logout() {
+        try {
+            $token = auth()->user()->currentAccessToken();
+            if($token) {
+                $token->delete();
+            }
+        } catch(Exception $e) {
+            Log::error("User logout error: Line: ".$e->getMessage()." | Message: ".$e->getMessage());
             throw new RuntimeException("Ocorreu um erro, tente novamente mais tarde.");
         }
     }

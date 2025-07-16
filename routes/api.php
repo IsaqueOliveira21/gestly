@@ -14,13 +14,11 @@ Route::prefix('v1')->group(function() {
     Route::post('/login', [UserController::class, 'login']);
 
     Route::middleware(['auth:sanctum', EmailVerified::class])->group(function() {
-        Route::get('/test', function() {
-            return response()->json("All is working fine!");
-        });
+        Route::get('/logout', [UserController::class, 'logout']);
 
         // Clientes
         Route::apiResource('clientes', ClienteController::class);
-        
+
         // Vendas
         Route::apiResource('vendas', VendaController::class);
     });

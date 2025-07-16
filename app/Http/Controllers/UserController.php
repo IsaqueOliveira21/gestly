@@ -30,11 +30,11 @@ class UserController extends Controller
                 'email' => 'string|required',
                 'password' => 'string|required|min:8',
             ]);
-    
+
             $user = $this->service->register($input);
-    
+
             event(new Registered($user));
-    
+
             return response()->json(['message' => 'Cadastro realizado com sucesso. Verifique seu e-mail.']);
         } catch(Exception $e) {
             return response()->json(['error' => "Ocorreu um erro, tente novamente mais tarde."], 500);
@@ -43,7 +43,7 @@ class UserController extends Controller
 
     public function verifyEmail(Request $request, $id, $hash) {
         $user = User::findOrFail($id);
-        
+
         if(!hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
             return response()->json(['message' => "Link de verificacao invalido."]);
         }
@@ -74,6 +74,15 @@ class UserController extends Controller
             return response()->json(['error' => $e->getMessage()], 401);
         } catch(Throwable $e) {
             return response()->json(['error' => "Ocorreu um erro, tente novamente mais tarde."], 500);
+        }
+    }
+
+    public function logout() {
+        try {
+            $this->service->logout();
+            return response()->json(['message' => 'Logout realizado com sucesso!'], 200);
+        } catch(Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }
